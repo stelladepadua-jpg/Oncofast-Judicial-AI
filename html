@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONCOFAST JUDICIAL AI — Inteligência Jurídica & Oportunidades Farmacêuticas</title>
+  <style>
+    :root {
+      --bg-main: #F6F8FB;
+      --navy-dark: #0B1F33;
+      --navy-card: #112A46;
+      --blue-accent: #175CD3;
+      --blue-light: #EFF8FF;
+      --green-accent: #14966B;
+      --green-light: #ECFDF3;
+      --amber-accent: #B54708;
+      --amber-light: #FFFAEB;
+      --red-accent: #D92D20;
+      --red-light: #FEF3F2;
+      --border-color: #E5EAF0;
+      --text-main: #0D1B2A;
+      --text-muted: #64748B;
+      --text-white: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 1px 3px rgba(11, 31, 51, 0.05);
+      --shadow-md: 0 4px 12px rgba(11, 31, 51, 0.08);
+      --shadow-lg: 0 12px 24px rgba(11, 31, 51, 0.12);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; font-size: 14px; line-height: 1.5; }
+
+    /* LAYOUT BASE */
+    #app-container { display: flex; width: 100vw; min-height: 100vh; }
+    
+    /* SIDEBAR */
+    aside.sidebar {
+      width: 260px;
+      background-color: var(--navy-dark);
+      color: var(--text-white);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: var(--transition);
+      z-index: 100;
+    }
+    .sidebar-brand {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .brand-title { font-weight: 700; font-size: 16px; letter-spacing: -0.5px; line-height: 1.1; }
+    .brand-title span { color: #38BDF8; font-size: 10px; display: block; font-weight: 600; tracking: 1px; margin-top: 2px; }
+    
+    nav.sidebar-menu { padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      color: #94A3B8;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-white); }
+    .nav-item.active { background: var(--blue-accent); color: var(--text-white); font-weight: 600; }
+    .nav-item svg { width: 18px; height: 18px; stroke-width: 2; flex-shrink: 0; }
+    .nav-badge { margin-left: auto; background: rgba(255,255,255,0.15); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; }
+
+    /* MAIN CONTENT AREA */
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow-y: auto; }
+    
+    /* HEADER */
+    header.top-header {
+      height: 70px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+    .header-search { display: flex; align-items: center; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 14px; width: 380px; gap: 8px; }
+    .header-search input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text-main); }
+    .header-actions { display: flex; align-items: center; gap: 16px; }
+    .sys-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green-accent); background: var(--green-light); padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+    .sys-status::before { content: ""; width: 7px; height: 7px; background: var(--green-accent); border-radius: 50%; }
+    
+    .btn-primary { background: var(--blue-accent); color: #fff; border: none; padding: 9px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); }
+    .btn-primary:hover { background: #154EC1; transform: translateY(-1px); }
+    .btn-secondary { background: #fff; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; transition: var(--transition); }
+    .btn-secondary:hover { background: var(--bg-main); }
+
+    /* CONTENT PAGES */
+    .content-body { padding: 32px; flex: 1; }
+    .view-section { display: none; }
+    .view-section.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* SECTION TITLE */
+    .page-title-block { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .page-title { font-size: 22px; font-weight: 700; color: var(--navy-dark); letter-spacing: -0.5px; }
+    .page-subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* KPIS GRID */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .kpi-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm); }
+    .kpi-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; tracking: 0.5px; }
+    .kpi-val { font-size: 26px; font-weight: 700; color: var(--navy-dark); margin: 8px 0 4px 0; }
+    .kpi-trend { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .kpi-trend.positive { color: var(--green-accent); }
+
+    /* CARDS & PANELS */
+    .panel-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+    .panel-title { font-size: 16px; font-weight: 700; color: var(--navy-dark); }
+
+    /* DATA TABLES */
+    .table-container { overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: #fff; }
+    table.data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+    table.data-table th { background: #FAFAFC; padding: 14px 16px; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+    table.data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
+    table.data-table tr:last-child td { border-bottom: none; }
+    table.data-table tr:hover { background: #F8FAFC; }
+
+    /* BADGES & SCORES */
+    .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    .badge-green { background: var(--green-light); color: var(--green-accent); }
+    .badge-blue { background: var(--blue-light); color: var(--blue-accent); }
+    .badge-amber { background: var(--amber-light); color: var(--amber-accent); }
+    .badge-red { background: var(--red-light); color: var(--red-accent); }
+    .badge-navy { background: #E2E8F0; color: var(--navy-dark); }
+
+    .score-pill { font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 6px; display: inline-block; }
+    .score-high { background: #DCFCE7; color: #15803D; }
+    .score-mid { background: #FEF9C3; color: #A16207; }
+    .score-low { background: #FEE2E2; color: #B91C1C; }
+
+    /* FILTERS GRID */
+    .filter-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; background: #fff; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .filter-group select, .filter-group input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 13px; outline: none; background: #fff; }
+
+    /* MODALS */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(11, 31, 51, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; width: 90%; max-width: 900px; max-height: 85vh; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; overflow: hidden; animation: popIn 0.25s cubic-bezier(0, 0, 0.2, 1); }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    .modal-header { padding: 20px 28px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: #FAFAFC; }
+    .modal-body { padding: 28px; overflow-y: auto; flex: 1; }
+    .modal-footer { padding: 16px 28px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px; background: #FAFAFC; }
+
+    /* TWO COLUMNS READER */
+    .reader-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .reader-col { background: #FAFAFC; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; }
+
+    /* FOOTER DISCLAIMER */
+    footer.app-footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border-color); background: #fff; margin-top: auto; }
+
+    /* TOAST NOTIFICATIONS */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 2000; }
+    .toast { background: var(--navy-dark); color: #fff; padding: 12px 20px; border-radius: var(--radius-sm); font-size: 13px; box-shadow: var(--shadow-md); border-left: 4px solid var(--green-accent); display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      aside.sidebar { width: 70px; }
+      .brand-title, .nav-text, .nav-badge { display: none; }
+      .reader-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app-container">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#175CD3"/>
+        <path d="M16 6L24 11V21L16 26L8 21V11L16 6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 16H20M16 12V20" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-title">
+        ONCOFAST
+        <span>JUDICIAL AI</span>
+      </div>
+    </div>
+    <nav class="sidebar-menu">
+      <a class="nav-item active" onclick="switchView('dashboard', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span class="nav-text">Dashboard</span>
+      </a>
+      <a class="nav-item" onclick="switchView('radar', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 12L16 8"/><path d="M12 3a9 9 0 0 1 9 9"/></svg>
+        <span class="nav-text">Radar Judicial</span>
+        <span class="nav-badge" id="badge-radar-count">15</span>
+      </a>
+      <a class="nav-item" onclick="switchView('opportunities', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <span class="nav-text">Oportunidades</span>
+        <span class="nav-badge" style="background:var(--green-accent);" id="badge-opp-count">23</span>
+      </a>
+      <a class="nav-item" onclick="switchView('match', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM7 21h10M12 3v18"/></svg>
+        <span class="nav-text">Match de Produtos</span>
+      </a>
+      <a class="nav-item" onclick="switchView('monitored', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="nav-text">Monitorados</span>
+      </a>
+      <a class="nav-item" onclick="switchView('alerts', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="nav-text">Alertas</span>
+      </a>
+      <a class="nav-item" onclick="switchView('reports', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span class="nav-text">Relatórios</span>
+      </a>
+      <a class="nav-item" onclick="switchView('compliance', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span class="nav-text">Compliance & LGPD</span>
+      </a>
+      <a class="nav-item" onclick="switchView('settings', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="nav-text">Configurações</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="top-header">
+      <div class="header-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="global-search-input" placeholder="Buscar processo, medicamento, princípio ativo, OAB..." onkeyup="handleGlobalSearch(event)">
+      </div>
+      <div class="header-actions">
+        <div class="sys-status">Motor de Varredura Ativo</div>
+        <button class="btn-primary" onclick="openModal('modal-new-analysis')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova Análise
+        </button>
+      </div>
+    </header>
+
+    <div class="content-body">
+
+      <section id="view-dashboard" class="view-section active">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Dashboard Executivo</h1>
+            <div class="page-subtitle">Panorama de inteligência judicial e demanda reprimida de alta complexidade.</div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Processos Analisados</div>
+            <div class="kpi-val">146</div>
+            <div class="kpi-trend positive">+12 hoje</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Oportunidades Detectadas</div>
+            <div class="kpi-val">23</div>
+            <div class="kpi-trend positive">82% Taxa Match</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Alta Prioridade</div>
+            <div class="kpi-val" style="color:var(--amber-accent);">7</div>
+            <div class="kpi-trend" style="color:var(--amber-accent);">Ação Imediata</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Potencial de Carteira</div>
+            <div class="kpi-val" style="color:var(--green-accent);">R$ 4.8M</div>
+            <div class="kpi-trend positive">Estimado</div>
+          </div>
+        </div>
+
+        <div class="panel-card" style="background: linear-gradient(135deg, #112A46 0%, #0B1F33 100%); color: #fff; border: none;">
+          <div style="display:flex; justify-shadow:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div>
+              <span class="badge" style="background:rgba(20,150,107,0.2); color:#34D399; margin-bottom:8px;">DESTAQUE CRÍTICO DE HOJE</span>
+              <h2 style="font-size:20px; font-weight:700;">TJGO — Amvuttra (vutrisirana) — 2 Unidades</h2>
+              <p style="color:#94A3B8; font-size:13px; margin-top:4px;">Tutela Deferida • Prazo de Cumprimento: 10 dias • Ente: Estado de Goiás • Score Match: 97%</p>
+            </div>
+            <div>
+              <button class="btn-primary" style="background:#14966B;" onclick="openProcessReader('5012847-19.2026.8.09.0001')">Analisar Oportunidade Destacada</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:24px;">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">Processos Capturados vs. Oportunidades (Últimos 7 dias)</div>
+            </div>
+            <svg width="100%" height="180" viewBox="0 0 500 180" style="overflow:visible;">
+              <line x1="40" y1="150" x2="480" y2="150" stroke="#E5EAF0" stroke-width="1"/>
+              <line x1="40" y1="100" x2="480" y2="100" stroke="#E5EAF0" stroke-dasharray="4" stroke-width="1"/>
+              <line x1="40" y1="50" x2="480" y2="50" stroke="#E5EAF0" stroke-dasharray="4" stroke-width="1"/>
+              <rect x="70" y="80" width="18" height="70" fill="#175CD3" rx="4"/>
+              <rect x="92" y="120" width="18" height="30" fill="#14966B" rx="4"/>
+
+              <rect x="140" y="60" width="18" height="90" fill="#175CD3" rx="4"/>
+              <rect x="162" y="110" width="18" height="40" fill="#14966B" rx="4"/>
+
+              <rect x="210" y="40" width="18" height="110" fill="#175CD3" rx="4"/>
+              <rect x="232" y="90" width="18" height="60" fill="#14966B" rx="4"/>
+
+              <rect x="280" y="70" width="18" height="80" fill="#175CD3" rx="4"/>
+              <rect x="302" y="115" width="18" height="35" fill="#14966B" rx="4"/>
+
+              <rect x="350" y="30" width="18" height="120" fill="#175CD3" rx="4"/>
+              <rect x="372" y="80" width="18" height="70" fill="#14966B" rx="4"/>
+
+              <text x="80" y="168" font-size="10" fill="#64748B">Seg</text>
+              <text x="150" y="168" font-size="10" fill="#64748B">Ter</text>
+              <text x="220" y="168" font-size="10" fill="#64748B">Qua</text>
+              <text x="290" y="168" font-size="10" fill="#64748B">Qui</text>
+              <text x="360" y="168" font-size="10" fill="#64748B">Sex</text>
+            </svg>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">Radar Judicial — Sincronização</div>
+            </div>
+            <div style="font-size:13px; display:flex; flex-direction:column; gap:12px;">
+              <div><strong>Última Sincronização:</strong> <span style="color:var(--text-muted)">Hoje, 11:45</span></div>
+              <div><strong>Fontes Consultadas:</strong> <span class="badge badge-navy">DataJud</span> <span class="badge badge-navy">Diários Oficiais</span></div>
+              <div><strong>Processos Novos Hoje:</strong> <span style="color:var(--green-accent); font-weight:700;">12 capturados</span></div>
+              <div><strong>Status de Redirecionamento:</strong> <span class="badge badge-green">Operacional sem filas</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-radar" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Radar Judicial</h1>
+            <div class="page-subtitle">Identificação contínua de processos públicos potencialmente relacionados ao fornecimento de medicamentos.</div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Tribunal</label>
+            <select id="filter-tribunal" onchange="applyRadarFilters()">
+              <option value="">Todos os Tribunais</option>
+              <option value="TJGO">TJGO</option>
+              <option value="TJSP">TJSP</option>
+              <option value="TRF1">TRF1</option>
+              <option value="TJRJ">TJRJ</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Medicamento</label>
+            <select id="filter-medicamento" onchange="applyRadarFilters()">
+              <option value="">Todos</option>
+              <option value="Amvuttra">Amvuttra</option>
+              <option value="Spinraza">Spinraza</option>
+              <option value="Trikafta">Trikafta</option>
+              <option value="Keytruda">Keytruda</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Tutela / Liminar</label>
+            <select id="filter-tutela" onchange="applyRadarFilters()">
+              <option value="">Todas</option>
+              <option value="Deferida">Deferida</option>
+              <option value="Pendente">Pendente</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Prioridade</label>
+            <select id="filter-prioridade" onchange="applyRadarFilters()">
+              <option value="">Todas</option>
+              <option value="Alta">Alta</option>
+              <option value="Média">Média</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="radar-table">
+            <thead>
+              <tr>
+                <th>Processo</th>
+                <th>Tribunal / UF</th>
+                <th>Medicamento</th>
+                <th>Ente Responsável</th>
+                <th>Decisão / Tutela</th>
+                <th>Prazo</th>
+                <th>Score Op.</th>
+                <th>Status Revisão</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="radar-tbody">
+              </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-opportunities" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Central de Oportunidades</h1>
+            <div class="page-subtitle">Gestão comercial de demandas de fornecimento público qualificadas.</div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID Oportunidade</th>
+                <th>Processo</th>
+                <th>Medicamento</th>
+                <th>Prazo Legal</th>
+                <th>Valor Est.</th>
+                <th>Match Portfólio</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="opp-tbody">
+              </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-match" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Match de Produtos</h1>
+            <div class="page-subtitle">Cruzamento em tempo real do portfólio farmacêutico com decisões judiciais de fornecimento.</div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Processo</th>
+                <th>Medicamento Solicitado</th>
+                <th>Produto Interno</th>
+                <th>Match AI</th>
+                <th>Disponibilidade</th>
+                <th>Prazo Logístico</th>
+                <th>Prioridade</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>5012847-19.2026.8.09.0001</strong></td>
+                <td>Amvuttra (vutrisirana)</td>
+                <td><span class="badge badge-blue">SKU-AMV-100</span></td>
+                <td><strong style="color:var(--green-accent);">97%</strong></td>
+                <td><span class="badge badge-green">Em Estoque (12 un)</span></td>
+                <td>10 dias</td>
+                <td><span class="badge badge-red">Alta</span></td>
+                <td><button class="btn-secondary" onclick="openOpportunityModal('5012847-19.2026.8.09.0001')">Ver Oportunidade</button></td>
+              </tr>
+              <tr>
+                <td><strong>1004921-88.2026.8.26.0100</strong></td>
+                <td>Spinraza (nusinersen)</td>
+                <td><span class="badge badge-blue">SKU-SPN-200</span></td>
+                <td><strong style="color:var(--green-accent);">94%</strong></td>
+                <td><span class="badge badge-green">Em Estoque (5 un)</span></td>
+                <td>5 dias</td>
+                <td><span class="badge badge-red">Alta</span></td>
+                <td><button class="btn-secondary" onclick="openOpportunityModal('1004921-88.2026.8.26.0100')">Ver Oportunidade</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-monitored" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Processos Monitorados</h1>
+            <div class="page-subtitle">Acompanhamento contínuo de movimentações em processos cadastrados na carteira.</div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Processo</th>
+                <th>Tribunal</th>
+                <th>Medicamento</th>
+                <th>Última Atualização</th>
+                <th>Último Evento</th>
+                <th>Status Monitoramento</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="monitored-tbody">
+              </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-alerts" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Central de Alertas</h1>
+            <div class="page-subtitle">Notificações em tempo real sobre decisões, concessões de liminares e alterações de prazo.</div>
+          </div>
+        </div>
+        <div id="alerts-list-container" style="display:flex; flex-direction:column; gap:12px;">
+          </div>
+      </section>
+
+      <section id="view-reports" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Relatórios & Inteligência</h1>
+            <div class="page-subtitle">Consolidado de mercado e métricas de demanda jurídica de medicamentos.</div>
+          </div>
+          <button class="btn-primary" onclick="exportReportsCSV()">Exportar Relatório CSV</button>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-title" style="margin-bottom:12px;">Volume de Oportunidades por Estado (UF)</div>
+          <div style="font-size:13px; color:var(--text-muted);">
+            • GO (Goiás): 38% das ocorrências de medicamentos de alta custo.<br>
+            • SP (São Paulo): 29% das ocorrências concentradas na capital.<br>
+            • RJ (Rio de Janeiro): 18% em varas federais.
+          </div>
+        </div>
+      </section>
+
+      <section id="view-compliance" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Compliance & LGPD</h1>
+            <div class="page-subtitle">Conformidade regulatória, minimização de dados e trilha de auditoria.</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:24px;">
+          <div class="panel-card">
+            <div style="font-weight:700; color:var(--navy-dark); margin-bottom:6px;">Princípio da Minimização</div>
+            <p style="font-size:12px; color:var(--text-muted);">O sistema oculta dados sensíveis e pessoais (CPF, dados de saúde do paciente) focando estritamente no órgão pagador, produto e quantidade.</p>
+          </div>
+          <div class="panel-card">
+            <div style="font-weight:700; color:var(--navy-dark); margin-bottom:6px;">Fontes Públicas Autorizadas</div>
+            <p style="font-size:12px; color:var(--text-muted);">Captura restrita aos portais oficiais dos Tribunais (DataJud) respeitando termos de uso sem bypass de captchas.</p>
+          </div>
+          <div class="panel-card">
+            <div style="font-weight:700; color:var(--navy-dark); margin-bottom:6px;">Validação Humana Obrigatória</div>
+            <p style="font-size:12px; color:var(--text-muted);">Nenhuma recomendação emitida pela IA substitui a revisão e decisão final da equipe jurídica e comercial.</p>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title">Histórico de Auditoria & Logs de Acesso</div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Usuário</th>
+                  <th>Perfil</th>
+                  <th>Ação Executada</th>
+                  <th>Objeto</th>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody id="audit-log-tbody">
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view-section">
+        <div class="page-title-block">
+          <div>
+            <h1 class="page-title">Configurações e Permissões</h1>
+            <div class="page-subtitle">Gestão de acessos por perfil funcional (RBAC).</div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-title" style="margin-bottom:16px;">Matriz de Controle de Acesso</div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Perfil</th>
+                  <th>Radar Judicial</th>
+                  <th>Oportunidades</th>
+                  <th>Compliance & Log</th>
+                  <th>Exportação Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Administrador</strong></td>
+                  <td><span class="badge badge-green">Total</span></td>
+                  <td><span class="badge badge-green">Total</span></td>
+                  <td><span class="badge badge-green">Total</span></td>
+                  <td><span class="badge badge-green">Permitido</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Jurídico</strong></td>
+                  <td><span class="badge badge-green">Total</span></td>
+                  <td><span class="badge badge-blue">Leitura</span></td>
+                  <td><span class="badge badge-blue">Leitura</span></td>
+                  <td><span class="badge badge-green">Permitido</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Comercial</strong></td>
+                  <td><span class="badge badge-blue">Leitura</span></td>
+                  <td><span class="badge badge-green">Total</span></td>
+                  <td><span class="badge badge-red">Bloqueado</span></td>
+                  <td><span class="badge badge-green">Permitido</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="app-footer">
+      Ambiente demonstrativo — dados fictícios. A IA não substitui análise jurídica profissional.
+    </footer>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-process-reader">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <h3 style="font-size:16px; font-weight:700;" id="reader-modal-title">Processo nº 5012847-19.2026.8.09.0001</h3>
+        <span class="badge badge-blue" style="margin-top:4px;">Fonte Verificada: TJGO</span>
+      </div>
+      <button class="btn-secondary" onclick="closeModal('modal-process-reader')">✕ Fechar</button>
+    </div>
+    <div class="modal-body">
+      <div class="reader-grid">
+        <div class="reader-col">
+          <h4 style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--navy-dark);">Timeline Processual Pública</h4>
+          <div style="display:flex; flex-direction:column; gap:12px; font-size:12px;">
+            <div style="border-left:2px solid var(--blue-accent); padding-left:10px;">
+              <strong>06/09/2026 10:15</strong>
+              <div>Decisão proferida: Decisão/Despacho - Tutela de Urgência Deferida.</div>
+            </div>
+            <div style="border-left:2px solid var(--border-color); padding-left:10px; color:var(--text-muted);">
+              <strong>05/09/2026 14:30</strong>
+              <div>Petição Inicial distribuída para a 1ª Vara da Fazenda Pública.</div>
+            </div>
+          </div>
+        </div>
+        <div class="reader-col" style="background:#F0F9FF; border-color:#BAE6FD;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="font-size:14px; font-weight:700; color:var(--navy-dark);">Painel de Inteligência IA</h4>
+            <span class="badge badge-amber">IA — requer validação</span>
+          </div>
+          <div style="font-size:13px; display:flex; flex-direction:column; gap:8px;">
+            <div><strong>Medicamento:</strong> Amvuttra (vutrisirana)</div>
+            <div><strong>Quantidade Extraída:</strong> 2 unidades</div>
+            <div><strong>Decisão Legal:</strong> Tutela Deferida</div>
+            <div><strong>Prazo Limite:</strong> 10 dias corridos</div>
+            <div><strong>Ente Responsável:</strong> Estado de Goiás</div>
+            <div style="margin-top:8px; padding:10px; background:#fff; border-radius:6px; border:1px solid #E2E8F0;">
+              <strong>Resumo Executivo IA:</strong><br>
+              Ação com probabilidade de compra direta em razão do exíguo prazo fixado na tutela de urgência.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-process-reader')">Cancelar</button>
+      <button class="btn-primary" onclick="triggerMonitoringFromModal()">Ativar Monitoramento</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-opportunity-detail">
+  <div class="modal-box" style="max-width:650px;">
+    <div class="modal-header">
+      <h3 style="font-size:16px; font-weight:700;">Detalhes Comerciais da Oportunidade</h3>
+      <button class="btn-secondary" onclick="closeModal('modal-opportunity-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="opp-modal-content">
+      </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-opportunity-detail')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-new-analysis">
+  <div class="modal-box" style="max-width:500px;">
+    <div class="modal-header">
+      <h3 style="font-size:16px; font-weight:700;">Executar Nova Varredura</h3>
+      <button class="btn-secondary" onclick="closeModal('modal-new-analysis')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div class="filter-group">
+          <label>Tribunal Alvo</label>
+          <select><option>Todos os Tribunais</option><option>TJGO</option><option>TRF1</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Termo de Busca / Medicamento</label>
+          <input type="text" placeholder="Ex: vutrisirana ou Amvuttra">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-new-analysis')">Cancelar</button>
+      <button class="btn-primary" onclick="runNewAnalysis()">Iniciar Busca</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+  // ==========================================
+  // CAMADA DE DADOS SIMULADOS & API SERVICE
+  // ==========================================
+  
+  // MOCK DATA: 15 PROCESSOS JUDICIAIS FICTÍCIOS
+  const mockProcesses = [
+    { id: "5012847-19.2026.8.09.0001", tribunal: "TJGO", uf: "GO", medicamento: "Amvuttra", principio: "vutrisirana", ente: "Estado de Goiás", decisao: "Tutela Deferida", prazo: "10 dias", score: 97, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: true, data: "06/09/2026", valorEst: "R$ 450.000" },
+    { id: "1004921-88.2026.8.26.0100", tribunal: "TJSP", uf: "SP", medicamento: "Spinraza", principio: "nusinersen", ente: "Estado de São Paulo", decisao: "Tutela Deferida", prazo: "5 dias", score: 94, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: false, data: "06/09/2026", valorEst: "R$ 800.000" },
+    { id: "0012983-45.2026.4.01.3400", tribunal: "TRF1", uf: "DF", medicamento: "Trikafta", principio: "elexacaftor", ente: "União Federal", decisao: "Pendente", prazo: "15 dias", score: 81, statusRevisao: "Em análise", prioridade: "Média", monitorado: true, data: "05/09/2026", valorEst: "R$ 300.000" },
+    { id: "5003412-11.2026.8.19.0001", tribunal: "TJRJ", uf: "RJ", medicamento: "Keytruda", principio: "pembrolizumabe", ente: "Estado do Rio de Janeiro", decisao: "Tutela Deferida", prazo: "8 dias", score: 89, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: false, data: "05/09/2026", valorEst: "R$ 180.000" },
+    { id: "1029384-22.2026.8.13.0024", tribunal: "TJMG", uf: "MG", medicamento: "Opdivo", principio: "nivolumabe", ente: "Estado de Minas Gerais", decisao: "Indeferida", prazo: "N/A", score: 32, statusRevisao: "Rejeitada", prioridade: "Baixa", monitorado: false, data: "04/09/2026", valorEst: "R$ 120.000" },
+    { id: "5088231-90.2026.4.03.6100", tribunal: "TRF3", uf: "SP", medicamento: "Soliris", principio: "eculizumabe", ente: "União Federal", decisao: "Tutela Deferida", prazo: "10 dias", score: 91, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: true, data: "04/09/2026", valorEst: "R$ 950.000" },
+    { id: "0003411-12.2026.4.04.7000", tribunal: "TRF4", uf: "PR", medicamento: "Eylea", principio: "aflibercepte", ente: "União Federal", decisao: "Pendente", prazo: "20 dias", score: 65, statusRevisao: "Pendente de revisão humana", prioridade: "Média", monitorado: false, data: "03/09/2026", valorEst: "R$ 45.000" },
+    { id: "5019922-33.2026.8.09.0001", tribunal: "TJGO", uf: "GO", medicamento: "Amvuttra", principio: "vutrisirana", ente: "Estado de Goiás", decisao: "Tutela Deferida", prazo: "12 dias", score: 95, statusRevisao: "Aprovada", prioridade: "Alta", monitorado: true, data: "03/09/2026", valorEst: "R$ 450.000" },
+    { id: "1098234-55.2026.8.26.0100", tribunal: "TJSP", uf: "SP", medicamento: "Tagrisso", principio: "osimertinibe", ente: "Estado de São Paulo", decisao: "Pendente", prazo: "15 dias", score: 72, statusRevisao: "Em análise", prioridade: "Média", monitorado: false, data: "02/09/2026", valorEst: "R$ 210.000" },
+    { id: "5001122-88.2026.8.19.0001", tribunal: "TJRJ", uf: "RJ", medicamento: "Spinraza", principio: "nusinersen", ente: "Estado do Rio de Janeiro", decisao: "Tutela Deferida", prazo: "5 dias", score: 93, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: false, data: "02/09/2026", valorEst: "R$ 800.000" },
+    { id: "1002341-11.2026.8.13.0024", tribunal: "TJMG", uf: "MG", medicamento: "Trikafta", principio: "elexacaftor", ente: "Estado de Minas Gerais", decisao: "Indeferida", prazo: "N/A", score: 28, statusRevisao: "Rejeitada", prioridade: "Baixa", monitorado: false, data: "01/09/2026", valorEst: "R$ 300.000" },
+    { id: "5012233-44.2026.4.01.3400", tribunal: "TRF1", uf: "DF", medicamento: "Keytruda", principio: "pembrolizumabe", ente: "União Federal", decisao: "Tutela Deferida", prazo: "10 dias", score: 88, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: true, data: "01/09/2026", valorEst: "R$ 180.000" },
+    { id: "0009988-77.2026.8.09.0001", tribunal: "TJGO", uf: "GO", medicamento: "Opdivo", principio: "nivolumabe", ente: "Município de Goiânia", decisao: "Pendente", prazo: "15 dias", score: 60, statusRevisao: "Em análise", prioridade: "Média", monitorado: false, data: "31/08/2026", valorEst: "R$ 120.000" },
+    { id: "1044556-99.2026.8.26.0100", tribunal: "TJSP", uf: "SP", medicamento: "Soliris", principio: "eculizumabe", ente: "Estado de São Paulo", decisao: "Tutela Deferida", prazo: "7 dias", score: 96, statusRevisao: "Aprovada", prioridade: "Alta", monitorado: true, data: "31/08/2026", valorEst: "R$ 950.000" },
+    { id: "5099887-11.2026.4.03.6100", tribunal: "TRF3", uf: "SP", medicamento: "Amvuttra", principio: "vutrisirana", ente: "União Federal", decisao: "Tutela Deferida", prazo: "10 dias", score: 98, statusRevisao: "Pendente de revisão humana", prioridade: "Alta", monitorado: true, data: "30/08/2026", valorEst: "R$ 450.000" }
+  ];
+
+  // MOCK AUDIT LOGS
+  const mockAuditLogs = [
+    { data: "06/09/2026 11:30", usuario: "Executivo / Admin", perfil: "Administrador", acao: "Consulta Processo", objeto: "5012847-19.2026.8.09.0001", resultado: "Permitido" },
+    { data: "06/09/2026 10:15", usuario: "Analista Jurídico", perfil: "Jurídico", acao: "Alteração Status", objeto: "1004921-88.2026.8.26.0100", resultado: "Aprovado" },
+    { data: "05/09/2026 16:45", usuario: "Gerente Comercial", perfil: "Comercial", acao: "Exportação CSV", objeto: "Relatório de Oportunidades", resultado: "Permitido" }
+  ];
+
+  // API SERVICE INTERFACE (FUTURE API INTEGRATION POINT)
+  const apiService = {
+    // FUTURE API INTEGRATION: Fetch processes from Escavador / DataJud / Internal DB
+    searchProcesses: async function(filters = {}) {
+      return mockProcesses.filter(p => {
+        if (filters.tribunal && p.tribunal !== filters.tribunal) return false;
+        if (filters.medicamento && p.medicamento !== filters.medicamento) return false;
+        if (filters.tutela && p.decisao !== filters.tutela) return false;
+        if (filters.prioridade && p.prioridade !== filters.prioridade) return false;
+        if (filters.query) {
+          const q = filters.query.toLowerCase();
+          return p.id.toLowerCase().includes(q) || p.medicamento.toLowerCase().includes(q) || p.principio.toLowerCase().includes(q) || p.ente.toLowerCase().includes(q);
+        }
+        return true;
+      });
+    },
+
+    // FUTURE API INTEGRATION: Fetch full process detail & LLM analysis
+    getProcess: async function(processId) {
+      return mockProcesses.find(p => p.id === processId);
+    },
+
+    // FUTURE API INTEGRATION: Toggle process monitoring in background worker
+    monitorProcess: async function(processId, status) {
+      const item = mockProcesses.find(p => p.id === processId);
+      if(item) item.monitorado = status;
+      return { success: true, processId, status };
+    },
+
+    // FUTURE API INTEGRATION: Fetch audit trail logs
+    getAuditLogs: async function() {
+      return mockAuditLogs;
+    }
+  };
+
+  // ==========================================
+  // CONTROLE DE INTERFACE & NAVEGAÇÃO SPA
+  // ==========================================
+
+  function switchView(viewId, element) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    
+    document.getElementById(`view-${viewId}`).classList.add('active');
+    if(element) element.classList.add('active');
+
+    // Reload contextual dynamic data
+    if (viewId === 'radar') renderRadarTable();
+    if (viewId === 'opportunities') renderOpportunitiesTable();
+    if (viewId === 'monitored') renderMonitoredTable();
+    if (viewId === 'alerts') renderAlertsList();
+    if (viewId === 'compliance') renderAuditTable();
+  }
+
+  // RENDER RADAR TABLE
+  async function renderRadarTable() {
+    const filters = {
+      tribunal: document.getElementById('filter-tribunal')?.value,
+      medicamento: document.getElementById('filter-medicamento')?.value,
+      tutela: document.getElementById('filter-tutela')?.value,
+      prioridade: document.getElementById('filter-prioridade')?.value
+    };
+    const data = await apiService.searchProcesses(filters);
+    const tbody = document.getElementById('radar-tbody');
+    tbody.innerHTML = '';
+
+    data.forEach(item => {
+      const scoreClass = item.score > 85 ? 'score-high' : (item.score > 60 ? 'score-mid' : 'score-low');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${item.id}</strong></td>
+        <td><span class="badge badge-navy">${item.tribunal}</span> ${item.uf}</td>
+        <td><strong>${item.medicamento}</strong><br><span style="font-size:11px; color:var(--text-muted);">${item.principio}</span></td>
+        <td>${item.ente}</td>
+        <td><span class="badge ${item.decisao.includes('Deferida') ? 'badge-green' : 'badge-amber'}">${item.decisao}</span></td>
+        <td>${item.prazo}</td>
+        <td><span class="score-pill ${scoreClass}">${item.score}/100</span></td>
+        <td><span class="badge badge-blue">${item.statusRevisao}</span></td>
+        <td>
+          <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="openProcessReader('${item.id}')">Analisar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function applyRadarFilters() {
+    renderRadarTable();
+  }
+
+  function handleGlobalSearch(event) {
+    if(event.key === 'Enter') {
+      const val = event.target.value;
+      switchView('radar', document.querySelectorAll('.nav-item')[1]);
+      const filterInput = document.getElementById('filter-medicamento');
+      apiService.searchProcesses({ query: val }).then(results => {
+        const tbody = document.getElementById('radar-tbody');
+        tbody.innerHTML = '';
+        results.forEach(item => {
+          const scoreClass = item.score > 85 ? 'score-high' : 'score-mid';
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${item.id}</strong></td>
+            <td><span class="badge badge-navy">${item.tribunal}</span> ${item.uf}</td>
+            <td><strong>${item.medicamento}</strong></td>
+            <td>${item.ente}</td>
+            <td><span class="badge badge-green">${item.decisao}</span></td>
+            <td>${item.prazo}</td>
+            <td><span class="score-pill ${scoreClass}">${item.score}/100</span></td>
+            <td><span class="badge badge-blue">${item.statusRevisao}</span></td>
+            <td><button class="btn-secondary" onclick="openProcessReader('${item.id}')">Analisar</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+  }
+
+  // RENDER CENTRAL DE OPORTUNIDADES
+  async function renderOpportunitiesTable() {
+    const data = await apiService.searchProcesses({ prioridade: 'Alta' });
+    const tbody = document.getElementById('opp-tbody');
+    tbody.innerHTML = '';
+
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="badge badge-navy">OPP-${item.id.substring(0,5)}</span></td>
+        <td><strong>${item.id}</strong></td>
+        <td><strong>${item.medicamento}</strong></td>
+        <td>${item.prazo}</td>
+        <td><strong style="color:var(--green-accent);">${item.valorEst}</strong></td>
+        <td><span class="badge badge-green">${item.score}%</span></td>
+        <td><span class="badge badge-amber">${item.statusRevisao}</span></td>
+        <td><button class="btn-primary" style="padding:4px 10px; font-size:12px;" onclick="openOpportunityModal('${item.id}')">Ver Detalhes</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // RENDER MONITORADOS
+  async function renderMonitoredTable() {
+    const data = (await apiService.searchProcesses()).filter(p => p.monitorado);
+    const tbody = document.getElementById('monitored-tbody');
+    tbody.innerHTML = '';
+
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${item.id}</strong></td>
+        <td><span class="badge badge-navy">${item.tribunal}</span></td>
+        <td>${item.medicamento}</td>
+        <td>Hoje, 10:15</td>
+        <td>Nova Petição / Intimação Expedida</td>
+        <td><span class="badge badge-green">Monitorando Ativo</span></td>
+        <td><button class="btn-secondary" onclick="toggleMonitor('${item.id}', false)">Pausar</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // RENDER ALERTAS
+  function renderAlertsList() {
+    const container = document.getElementById('alerts-list-container');
+    container.innerHTML = `
+      <div class="panel-card" style="border-left:4px solid var(--green-accent);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span class="badge badge-green">NOVA OPORTUNIDADE DETECTADA</span>
+            <h4 style="font-size:14px; font-weight:700; margin-top:4px;">TJGO — Amvuttra (vutrisirana) — 2 Unidades</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Processo nº 5012847-19.2026.8.09.0001 • Tutela Deferida (Prazo: 10 dias)</p>
+          </div>
+          <button class="btn-primary" onclick="openProcessReader('5012847-19.2026.8.09.0001')">Analisar</button>
+        </div>
+      </div>
+      <div class="panel-card" style="border-left:4px solid var(--amber-accent);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span class="badge badge-amber">ALTERAÇÃO DE PRAZO LEGAL</span>
+            <h4 style="font-size:14px; font-weight:700; margin-top:4px;">TJSP — Spinraza (nusinersen)</h4>
+            <p style="font-size:12px; color:var(--text-muted);">Processo nº 1004921-88.2026.8.26.0100 • Prazo reduzido para 5 dias sob pena de multa diária.</p>
+          </div>
+          <button class="btn-secondary" onclick="openProcessReader('1004921-88.2026.8.26.0100')">Verificar</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // RENDER AUDIT TABLE
+  async function renderAuditTable() {
+    const logs = await apiService.getAuditLogs();
+    const tbody = document.getElementById('audit-log-tbody');
+    tbody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${log.data}</td>
+        <td><strong>${log.usuario}</strong></td>
+        <td><span class="badge badge-navy">${log.perfil}</span></td>
+        <td>${log.acao}</td>
+        <td>${log.objeto}</td>
+        <td><span class="badge badge-green">${log.resultado}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // MODAL HANDLERS
+  let currentActiveProcessId = null;
+
+  async function openProcessReader(processId) {
+    currentActiveProcessId = processId;
+    const process = await apiService.getProcess(processId);
+    if(process) {
+      document.getElementById('reader-modal-title').innerText = `Processo nº ${process.id}`;
+      openModal('modal-process-reader');
+    }
+  }
+
+  async function openOpportunityModal(processId) {
+    const process = await apiService.getProcess(processId);
+    if(process) {
+      const content = document.getElementById('opp-modal-content');
+      content.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:13px;">
+          <div><strong>Processo:</strong> ${process.id}</div>
+          <div><strong>Medicamento:</strong> ${process.medicamento} (${process.principio})</div>
+          <div><strong>Ente Devedor:</strong> ${process.ente}</div>
+          <div><strong>Valor Estimado:</strong> <strong style="color:var(--green-accent);">${process.valorEst}</strong></div>
+          <div><strong>Score de Priorização Operacional:</strong> <span class="score-pill score-high">${process.score}/100</span></div>
+          <div style="padding:12px; background:#FAFAFC; border-radius:6px; border:1px solid #E5EAF0; margin-top:8px;">
+            <strong>Parecer Prévio IA:</strong> Demanda com alta compatibilidade logística. Produto em estoque nacional para entrega imediata em até 48 horas.
+          </div>
+        </div>
+      `;
+      openModal('modal-opportunity-detail');
+    }
+  }
+
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+  }
+
+  async function toggleMonitor(processId, status) {
+    await apiService.monitorProcess(processId, status);
+    showToast(status ? "Processo adicionado aos monitorados!" : "Monitoramento pausado.");
+    renderMonitoredTable();
+  }
+
+  function triggerMonitoringFromModal() {
+    if(currentActiveProcessId) {
+      toggleMonitor(currentActiveProcessId, true);
+      closeModal('modal-process-reader');
+    }
+  }
+
+  function runNewAnalysis() {
+    closeModal('modal-new-analysis');
+    showToast("Varredura executada com sucesso! 2 novos processos identificados.");
+    renderRadarTable();
+  }
+
+  // EXPORT CSV UTILITY
+  function exportReportsCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,Processo,Tribunal,Medicamento,Prazo,ValorEstimado,Score\n";
+    mockProcesses.forEach(p => {
+      csvContent += `${p.id},${p.tribunal},${p.medicamento},${p.prazo},${p.valorEst},${p.score}\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "oncofast_relatorio_oportunidades.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast("Relatório CSV gerado e baixado!");
+  }
+
+  // TOAST NOTIFIER
+  function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span>${message}</span>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  }
+
+  // INIT INITIAL STATE
+  document.addEventListener("DOMContentLoaded", () => {
+    renderRadarTable();
+  });
+</script>
+</body>
+</html>
